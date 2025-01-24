@@ -17,7 +17,7 @@ public:
         // Find the peak
         for (int i = 1; i < length - 1; ++i)
         {
-            if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1])  // Peak is found
+            if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) // Peak is found
             {
                 peak = i;
                 break;
@@ -48,7 +48,7 @@ public:
             }
         }
 
-        return make_pair(true, peak);  // Return true and the peak index
+        return make_pair(true, peak); // Return true and the peak index
     }
 };
 
