@@ -9,8 +9,10 @@ public:
     // Top-Down Approach with Memoization
     int TopDownApproach(int n, vector<int> &mappingVector)
     {
-        if (n == 0) return 0;
-        if (n == 1) return 1;
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return 1;
 
         if (mappingVector[n] != -1)
             return mappingVector[n];
@@ -29,8 +31,10 @@ public:
     // Bottom-Up Approach (Tabulation)
     int BottomUpApproach(int n)
     {
-        if (n == 0) return 0;
-        if (n == 1) return 1;
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return 1;
 
         vector<int> mappingVector(n + 1, 0);
         mappingVector[0] = 0;
@@ -41,6 +45,22 @@ public:
 
         return mappingVector[n];
     }
+
+    int findOptimum(int n)
+    {
+        if (n <= 1)
+            return n;
+        int previous1 = 0;
+        int previous2 = 1;
+
+        for (int i = 0; i < n; i++)
+        {
+            int current = previous1 + previous2;
+            previous2 = previous1;
+            previous1 = current;
+        }
+        return previous1;
+    }
 };
 
 int main()
@@ -49,15 +69,17 @@ int main()
     cout << "Enter the value for Nth Fibonacci term: ";
     cin >> n;
 
-    if (n < 0) {
+    if (n < 0)
+    {
         cout << "Fibonacci sequence is not defined for negative numbers." << endl;
         return EXIT_FAILURE;
     }
 
     Fibonacci fibo;
-    
+
     cout << "The Fibonacci term (Top-Down Approach): " << fibo.TopDownApproach(n) << endl;
     cout << "The Fibonacci term (Bottom-Up Approach): " << fibo.BottomUpApproach(n) << endl;
+    cout << "The Fibonacci term (Space Optimazation Approach): " << fibo.findOptimum(n) << endl;
 
     return EXIT_SUCCESS;
 }
