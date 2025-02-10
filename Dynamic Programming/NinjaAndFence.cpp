@@ -37,16 +37,30 @@ public:
 
         for (int i = 3; i <= n; i++)
         {
-            dp[i] = (k - 1) * (dp[i - 2] + dp[i - 1]);
+            dp[i] = (k - 1) * dp[i - 2] +(k-1)* dp[i - 1];
         }
         return dp[n];
+    }
+    int spaceOptimized(int n,int k)
+    {
+        int previous_2=k;
+        int previous_1=k+k*(k-1);
+        for (int i=3;i<=n;i++)
+        {
+            int sameColor=(k-1)*previous_2;
+            int DifferentColor=(k-1)*previous_1;
+            int current= sameColor+DifferentColor;
+            previous_2=previous_1;
+            previous_1=current;
+        }
+        return previous_1;
     }
 };
 
 int main()
 {
     NinjaFence nf;
-    int n = 3; // Example value for n
+    int n = 13; // Example value for n
     int k = 2;  // Example value for k
 
     cout << "Number of ways to paint the fence (Recursion): " << nf.Recursion(n, k) << endl;
@@ -55,6 +69,7 @@ int main()
     cout << "Number of ways to paint the fence (Memoization): " << nf.Memoization(n, k, dp) << endl;
 
     cout << "Number of ways to paint the fence (Tabulation): " << nf.Tabulation(n, k) << endl;
+    cout << "Number of ways to paint the fence (Space Optimized): " << nf.spaceOptimized(n, k) << endl;
 
     return 0;
 }
