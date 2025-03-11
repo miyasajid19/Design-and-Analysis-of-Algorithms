@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <climits>
+#include <string>
 #include <unordered_map>
 using namespace std;
 
 // Class definition to handle all three approaches
-class MatrixChainMultiplication {
+class MatrixChainMultiplication
+{
     vector<int> arr; // Dimensions of matrices
 
     // Memoization storage
@@ -19,13 +21,16 @@ public:
     MatrixChainMultiplication(const vector<int> &arr) : arr(arr) {}
 
     // Recursive approach
-    int recursiveSolution(int i, int j) {
-        if (i == j) {
+    int recursiveSolution(int i, int j)
+    {
+        if (i == j)
+        {
             return 0; // No cost to multiply one matrix
         }
 
         int minCost = INT_MAX;
-        for (int k = i; k < j; k++) {
+        for (int k = i; k < j; k++)
+        {
             int cost = recursiveSolution(i, k) + recursiveSolution(k + 1, j) + arr[i - 1] * arr[k] * arr[j];
             minCost = min(minCost, cost);
         }
@@ -33,18 +38,22 @@ public:
     }
 
     // Memoization approach
-    int memoizedSolution(int i, int j) {
-        if (i == j) {
+    int memoizedSolution(int i, int j)
+    {
+        if (i == j)
+        {
             return 0; // No cost to multiply one matrix
         }
 
         string key = to_string(i) + "," + to_string(j);
-        if (memo.find(key) != memo.end()) {
+        if (memo.find(key) != memo.end())
+        {
             return memo[key]; // Return already computed value
         }
 
         int minCost = INT_MAX;
-        for (int k = i; k < j; k++) {
+        for (int k = i; k < j; k++)
+        {
             int cost = memoizedSolution(i, k) + memoizedSolution(k + 1, j) + arr[i - 1] * arr[k] * arr[j];
             minCost = min(minCost, cost);
         }
@@ -53,19 +62,24 @@ public:
     }
 
     // Tabulation approach
-    int tabulationSolution() {
+    int tabulationSolution()
+    {
         int n = arr.size() - 1;
         tabulationTable.resize(n + 1, vector<int>(n + 1, 0));
         splitTable.resize(n + 1, vector<int>(n + 1, 0));
 
-        for (int l = 2; l <= n; l++) { // Chain length
-            for (int i = 1; i <= n - l + 1; i++) {
+        for (int l = 2; l <= n; l++)
+        { // Chain length
+            for (int i = 1; i <= n - l + 1; i++)
+            {
                 int j = i + l - 1;
                 tabulationTable[i][j] = INT_MAX;
 
-                for (int k = i; k < j; k++) {
+                for (int k = i; k < j; k++)
+                {
                     int cost = tabulationTable[i][k] + tabulationTable[k + 1][j] + arr[i - 1] * arr[k] * arr[j];
-                    if (cost < tabulationTable[i][j]) {
+                    if (cost < tabulationTable[i][j])
+                    {
                         tabulationTable[i][j] = cost;
                         splitTable[i][j] = k;
                     }
@@ -76,10 +90,14 @@ public:
     }
 
     // Function to print optimal parenthesization
-    void printOptimalParenthesization(int i, int j) {
-        if (i == j) {
-            cout << "A" << i;
-        } else {
+    void printOptimalParenthesization(int i, int j)
+    {
+        if (i == j)
+        {
+            cout << " A" << i;
+        }
+        else
+        {
             cout << "(";
             printOptimalParenthesization(i, splitTable[i][j]);
             printOptimalParenthesization(splitTable[i][j] + 1, j);
@@ -88,7 +106,8 @@ public:
     }
 
     // Function to demonstrate all approaches
-    void demonstrateSolutions() {
+    void demonstrateSolutions()
+    {
         int n = arr.size() - 1;
         cout << "Using Recursion: " << recursiveSolution(1, n) << endl;
         cout << "Using Memoization: " << memoizedSolution(1, n) << endl;
@@ -99,7 +118,8 @@ public:
     }
 };
 
-int main() {
+int main()
+{
     vector<int> arr = {5, 4, 6, 2, 7};
     MatrixChainMultiplication obj(arr);
     obj.demonstrateSolutions();
