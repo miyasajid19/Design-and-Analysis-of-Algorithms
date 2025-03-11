@@ -5,7 +5,7 @@ using namespace std;
 
 int maxSumSUbArray(vector<int>arr)
 {
-    int MaxSum=0;
+    int MaxSum=INT_MIN;
     for (int i=0;i<arr.size();i++)
     {
         int sum=0;
