@@ -18,7 +18,8 @@ public:
         // Binary search to find the peak
         while (low < high)
         {
-            int mid = (high + low) / 2;
+            int mid = (high + low) >> 1;
+            // int mid = (high + low) /2;
             if (arr[mid] < arr[mid + 1])
             {
                 // Peak is in the right half
@@ -46,7 +47,7 @@ int main()
 {
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    // freopen("output.txt", "w", stdout);
 #endif
     Solution s;
     pair<bool, int> result;
