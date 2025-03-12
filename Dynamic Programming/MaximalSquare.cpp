@@ -78,22 +78,53 @@ public:
         vector<vector<int>> dp(row, vector<int>(column, 0));
         int maximumSquare = 0;
 
-        for (int i=row-1;i>=0;i--)
+        for (int i = row - 1; i >= 0; i--)
         {
-            for (int j=column-1;j>=0;j--)
+            for (int j = column - 1; j >= 0; j--)
             {
-                if (i==row-1 || j==column-1)
+                if (i == row - 1 || j == column - 1)
                 {
-                    dp[i][j]=array[i][j];
+                    dp[i][j] = array[i][j];
                 }
-                else if (array[i][j]==1)
+                else if (array[i][j] == 1)
                 {
-                    dp[i][j]=1+min({dp[i+1][j],dp[i][j+1],dp[i+1][j+1]});
+                    dp[i][j] = 1 + min({dp[i + 1][j], dp[i][j + 1], dp[i + 1][j + 1]});
                 }
-                maximumSquare=max(maximumSquare,dp[i][j]);
+                maximumSquare = max(maximumSquare, dp[i][j]);
             }
         }
-        return maximumSquare*maximumSquare;
+        return maximumSquare * maximumSquare;
+    }
+
+    // space optimized tabulation
+    int SpaceOptimizedTabulation()
+    {
+        vector<int> dp(column, 0);
+        int maximumSquare = 0;
+        int previous = 0;
+
+        for (int i = row - 1; i >= 0; i--)
+        {
+            for (int j = column - 1; j >= 0; j--)
+            {
+                int temp = dp[j];
+                if (i == row - 1 || j == column - 1)
+                {
+                    dp[j] = array[i][j];
+                }
+                else if (array[i][j] == 1)
+                {
+                    dp[j] = 1 + min({dp[j], dp[j + 1], previous});
+                }
+                else
+                {
+                    dp[j] = 0;
+                }
+                maximumSquare = max(maximumSquare, dp[j]);
+                previous = temp;
+            }
+        }
+        return maximumSquare * maximumSquare;
     }
 };
 
@@ -109,6 +140,7 @@ int main()
     cout << "The Maximum Possible area of Square Matrix is " << sol.maxSquare() << endl;
     cout << "The Maximum Possible area of Square Matrix using Memoization is " << sol.maxSquareMemoization() << endl;
     cout << "The Maximum Possible area of Square Matrix using Tabulation is " << sol.Tabulation() << endl;
+    cout << "The Maximum Possible area of Square Matrix using Space Optimized is " << sol.SpaceOptimizedTabulation() << endl;
 
     return EXIT_SUCCESS;
 }
