@@ -48,25 +48,7 @@ public:
         return max(inclusive, exclusive);
     }
 
-    // tabulation
-    int tabulation(int capacity, int index, vector<int> &dp)
-    {
-        if (index == 0)
-        {
-            dp[0] = weights[0] <= capacity ? values[0] : 0;
-            return dp[0];
-        }
-
-        if (dp[index] != -1)
-            return dp[index];
-
-        int inclusive = 0;
-        if (weights[index] <= capacity)
-            inclusive = values[index] + tabulation(capacity - weights[index], index - 1, dp);
-        int exclusive = tabulation(capacity, index - 1, dp);
-        dp[index] = max(inclusive, exclusive);
-        return dp[index];
-    }
+    // memoization
     int memoization(int index, int capacity, vector<vector<int>> &dp)
     {
         if (index == 0)
@@ -82,6 +64,35 @@ public:
         dp[index][capacity] = max(inclusive, exclusive);
         return dp[index][capacity];
     }
+
+    // tabulation
+    int tabulation(int capacity)
+    {
+        vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));
+
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= capacity; j++)
+            {
+                if (weights[i - 1] <= capacity)
+                {
+                    if (values[i - 1] + dp[i - 1][j - weights[i - 1]] > dp[i - 1][j])
+                    {
+                        dp[i][j] = values[i - 1] + dp[i - 1][j - weights[i - 1]];
+                    }
+                    else
+                    {
+                        dp[i][j] = dp[i - 1][j];
+                    }
+                }
+                else
+                {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        return dp[n-1][capacity];
+    }
 };
 
 int main()
@@ -94,6 +105,7 @@ int main()
     cout << "Maximum value in Knapsack = " << s.non_recurrsive(capacity) << endl;
     cout << "Maximum value in Knapsack = " << s.recurrsive(n, capacity) << endl;
     vector<vector<int>> dp(weights.size() + 1, vector<int>(capacity + 1, -1));
-    cout << "Maximum value in Knapsack = " << s.memoization(n-1,capacity, dp) << endl;
+    cout << "Maximum value in Knapsack = " << s.memoization(n - 1, capacity, dp) << endl;
+    cout << "Maximum value in Knapsack = " << s.tabulation(capacity) << endl;
     return EXIT_SUCCESS;
 }
