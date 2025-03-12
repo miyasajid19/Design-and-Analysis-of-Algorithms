@@ -1,55 +1,79 @@
 #include <iostream>
-#include <cstdlib>
 #include <vector>
+#include<algorithm>
 using namespace std;
-class Solution
-{
+
+class Solution {
     vector<vector<int>> array;
     int row, column;
 
 public:
-    Solution(vector<vector<int>> &array) : array(array)
-    {
-        this->row = array.size();
-        this->column = array[0].size();
-    }
+    Solution(const vector<vector<int>> &array) : array(array), row(array.size()), column(array[0].size()) {}
 
-    int recurrsive(int i, int j, int &maximumsquare)
-    {
-        if (i >= row || j >= column)
-        {
+    int recursive(int i, int j, int &maximumSquare) {
+        if (i >= row || j >= column) {
             return 0;
         }
 
-        int right = recurrsive(i, j + 1, maximumsquare);
-        int diagonal = recurrsive(i + 1, j + 1, maximumsquare);
-        int left = recurrsive(i + 1, j, maximumsquare);
+        int right = recursive(i, j + 1, maximumSquare);
+        int diagonal = recursive(i + 1, j + 1, maximumSquare);
+        int down = recursive(i + 1, j, maximumSquare);
 
-        if (array[i][j] == 1)
-        {
-            int ans = 1 + min(right, min(left, diagonal));
-            maximumsquare = max(maximumsquare, ans);
+        if (array[i][j] == 1) {
+            int ans = 1 + min({right, down, diagonal});
+            maximumSquare = max(maximumSquare, ans);
             return ans;
         }
-        else
-            return 0;
+        return 0;
     }
 
-    int maxSquare()
-    {
-        int maximumsquare = 0;
-        recurrsive(0, 0, maximumsquare);
-        return maximumsquare * maximumsquare;
+    int maxSquare() {
+        int maximumSquare = 0;
+        recursive(0, 0, maximumSquare);
+        return maximumSquare * maximumSquare;
+    }
+
+    int memoization(int i, int j, vector<vector<int>> &dp, int &maximumSquare) {
+        if (i >= row || j >= column) {
+            return 0;
+        }
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        int right = memoization(i, j + 1, dp, maximumSquare);
+        int diagonal = memoization(i + 1, j + 1, dp, maximumSquare);
+        int down = memoization(i + 1, j, dp, maximumSquare);
+
+        if (array[i][j] == 1) {
+            int ans = 1 + min({right, down, diagonal});
+            dp[i][j] = ans;
+            maximumSquare = max(maximumSquare, ans);
+            return ans;
+        }
+        dp[i][j] = 0;
+        return 0;
+    }
+
+    int maxSquareMemoization() {
+        vector<vector<int>> dp(row, vector<int>(column, -1));
+        int maximumSquare = 0;
+        memoization(0, 0, dp, maximumSquare);
+        return maximumSquare * maximumSquare;
     }
 };
-int main()
-{
 
-    vector<vector<int>> array = {{1, 0, 1, 0, 0},
-                                 {1, 0, 1, 1, 1},
-                                 {1, 1, 1, 1, 1},
-                                 {1, 0, 0, 1, 0}};
+int main() {
+    vector<vector<int>> array = {
+        {1, 0, 1, 0, 0},
+        {1, 0, 1, 1, 1},
+        {1, 1, 1, 1, 1},
+        {1, 0, 0, 1, 0}
+    };
+
     Solution sol(array);
-    cout<<"The Maximum Possible array of Square Matrix is " << sol.maxSquare() << endl;
+    cout << "The Maximum Possible area of Square Matrix is " << sol.maxSquare() << endl;
+    cout << "The Maximum Possible area of Square Matrix using Memoization is " << sol.maxSquareMemoization() << endl;
+
     return EXIT_SUCCESS;
 }
