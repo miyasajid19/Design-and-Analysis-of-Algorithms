@@ -47,6 +47,41 @@ public:
         int exclusive = recurrsive(index - 1, capacity);
         return max(inclusive, exclusive);
     }
+
+    // tabulation
+    int tabulation(int capacity, int index, vector<int> &dp)
+    {
+        if (index == 0)
+        {
+            dp[0] = weights[0] <= capacity ? values[0] : 0;
+            return dp[0];
+        }
+
+        if (dp[index] != -1)
+            return dp[index];
+
+        int inclusive = 0;
+        if (weights[index] <= capacity)
+            inclusive = values[index] + tabulation(capacity - weights[index], index - 1, dp);
+        int exclusive = tabulation(capacity, index - 1, dp);
+        dp[index] = max(inclusive, exclusive);
+        return dp[index];
+    }
+    int memoization(int index, int capacity, vector<vector<int>> &dp)
+    {
+        if (index == 0)
+            return weights[0] <= capacity ? values[0] : 0;
+
+        if (dp[index][capacity] != -1)
+            return dp[index][capacity];
+
+        int inclusive = 0;
+        if (weights[index] <= capacity)
+            inclusive = values[index] + memoization(index - 1, capacity - weights[index], dp);
+        int exclusive = memoization(index - 1, capacity, dp);
+        dp[index][capacity] = max(inclusive, exclusive);
+        return dp[index][capacity];
+    }
 };
 
 int main()
@@ -54,8 +89,11 @@ int main()
     vector<int> weights = {1, 3, 4, 5};
     vector<int> values = {1, 4, 5, 7};
     int n = weights.size();
+    int capacity = 7;
     Solution s(weights, values, n);
-    cout << "Maximum value in Knapsack = " << s.non_recurrsive(7) << endl;
-    cout << "Maximum value in Knapsack = " << s.recurrsive(n, 7) << endl;
+    cout << "Maximum value in Knapsack = " << s.non_recurrsive(capacity) << endl;
+    cout << "Maximum value in Knapsack = " << s.recurrsive(n, capacity) << endl;
+    vector<vector<int>> dp(weights.size() + 1, vector<int>(capacity + 1, -1));
+    cout << "Maximum value in Knapsack = " << s.memoization(n-1,capacity, dp) << endl;
     return EXIT_SUCCESS;
 }
