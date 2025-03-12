@@ -91,7 +91,7 @@ public:
                 }
             }
         }
-        return dp[n-1][capacity];
+        return dp[n - 1][capacity];
     }
 };
 
