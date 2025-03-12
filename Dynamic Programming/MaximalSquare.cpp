@@ -2,13 +2,13 @@
 #include <cstdlib>
 #include <vector>
 using namespace std;
-class solution
+class Solution
 {
     vector<vector<int>> array;
     int row, column;
 
 public:
-    solution(vector<vector<int>> &array) : array(array)
+    Solution(vector<vector<int>> &array) : array(array)
     {
         this->row = array.size();
         this->column = array[0].size();
@@ -39,7 +39,7 @@ public:
     {
         int maximumsquare = 0;
         recurrsive(0, 0, maximumsquare);
-        return maximumsquare;
+        return maximumsquare * maximumsquare;
     }
 };
 int main()
@@ -49,7 +49,7 @@ int main()
                                  {1, 0, 1, 1, 1},
                                  {1, 1, 1, 1, 1},
                                  {1, 0, 0, 1, 0}};
-    solution sol(array);
-    cout << sol.maxSquare() << endl;
+    Solution sol(array);
+    cout<<"The Maximum Possible array of Square Matrix is " << sol.maxSquare() << endl;
     return EXIT_SUCCESS;
 }
