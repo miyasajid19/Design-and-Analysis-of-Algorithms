@@ -1,28 +1,29 @@
 #include <iostream>
 #include <vector>
-#include <cstdlib>
 using namespace std;
+
 class SudokuSolver
 {
     vector<vector<int>> board;
     int N;
+
     bool isSafe(int row, int column, int value)
     {
-        // check the row
+        // Check the row
         for (int i = 0; i < N; i++)
         {
             if (board[row][i] == value)
                 return false;
         }
 
-        // check the column
+        // Check the column
         for (int i = 0; i < N; i++)
         {
             if (board[i][column] == value)
                 return false;
         }
 
-        // check the 3*3 grid
+        // Check the 3x3 grid
         int startRow = row - row % 3;
         int startColumn = column - column % 3;
         for (int i = 0; i < 3; i++)
@@ -36,45 +37,64 @@ class SudokuSolver
         return true;
     }
 
-public:
-    SudokuSolver(vector<vector<int>> board)
+    bool solveSudoku()
     {
-        this->board = board;
-        N = board[0].size();
-    }
-
-    bool solve()
-    {
-        for (int i = 0; i < N; i++)
+        for (int row = 0; row < N; row++)
         {
-            for (int j = 0; j < N; j++)
+            for (int col = 0; col < N; col++)
             {
-                if (board[i][j] != 0)
+                if (board[row][col] != 0)
                 {
                     continue;
                 }
-                // try all possible values from 1 to 9
-                for (int value = 1; value <= 9; i++)
+
+                // Try all possible values from 1 to 9
+                for (int value = 1; value <= 9; value++)
                 {
-                    if (isSafe(i, j, value))
+                    if (isSafe(row, col, value))
                     {
-                        board[i][j] = value;
-                        if (solve())
+                        board[row][col] = value;
+
+                        if (solveSudoku())
                         {
                             return true;
                         }
-                        // backtrack
-                        board[i][j] = 0;
+
+                        // Backtrack
+                        board[row][col] = 0;
                     }
                 }
-                // if no value is valid, return false
+
+                // If no value is valid, return false
                 return false;
             }
         }
-        // if we reach here, it means we have solved the sudoku
+
+        // If we reach here, it means the Sudoku is solved
         return true;
     }
+
+public:
+    SudokuSolver(const vector<vector<int>> &inputBoard) : board(inputBoard), N(inputBoard.size()) {}
+
+    bool solve()
+    {
+        return solveSudoku();
+    }
+
+    void printBoard() const
+    {
+        for (const auto &row : board)
+        {
+            for (int num : row)
+            {
+                cout << num << " ";
+            }
+            cout << endl;
+        }
+    }
 };
+
 int main()
 {
     vector<vector<int>> board = {
@@ -86,23 +106,19 @@ int main()
         {7, 0, 0, 0, 2, 0, 0, 0, 6},
         {0, 6, 0, 0, 0, 0, 2, 8, 0},
         {0, 0, 0, 4, 1, 9, 0, 0, 5},
-        {0, 0, 5, 3, 8, 6, 7, 9, 2}};
+        {0, 0, 0, 0, 8, 0, 0, 7, 9}};
+
     SudokuSolver solver(board);
+
     if (solver.solve())
     {
         cout << "Sudoku solved successfully!" << endl;
-        for (const auto &row : board)
-        {
-            for (int num : row)
-            {
-                cout << num << " ";
-            }
-            cout << endl;
-        }
+        solver.printBoard();
     }
     else
     {
         cout << "No solution exists!" << endl;
     }
+
     return EXIT_SUCCESS;
 }
