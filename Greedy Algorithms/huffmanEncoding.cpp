@@ -89,8 +89,8 @@ public:
 int main()
 {
     // Sample input
-    string s = "abcdef";
-    vector<int> f = {5, 9, 12, 13, 16, 45};
+    string s = "DATSRUCE";
+    vector<int> f = {18,37,29,50,17,30,6,13};
     int n = s.size();
 
     Solution solution;

@@ -112,6 +112,20 @@ public:
         cout << "Using Recursion: " << recursiveSolution(1, n) << endl;
         cout << "Using Memoization: " << memoizedSolution(1, n) << endl;
         cout << "Using Tabulation: " << tabulationSolution() << endl;
+        // Print split table for tabulation
+        cout << "Split Table: " << endl;
+        printf("0 |1|2|3|4|5|6|7|8|9\n");
+        for (int i = 1; i <= n; i++)
+        {
+            printf("%d |", i);
+            for (int j = 1; j <= n; j++)
+            {
+                cout << splitTable[i][j] << "|";
+            }
+            cout << endl;
+        }
+        
+
         cout << "Optimal Parenthesization: ";
         printOptimalParenthesization(1, n);
         cout << endl;
@@ -120,7 +134,7 @@ public:
 
 int main()
 {
-    vector<int> arr = {5, 4, 6, 2, 7};
+    vector<int> arr = {1, 33,5, 1, 12, 1,7,18,4,1};
     MatrixChainMultiplication obj(arr);
     obj.demonstrateSolutions();
     return 0;

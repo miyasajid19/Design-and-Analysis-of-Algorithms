@@ -34,7 +34,7 @@ public:
 
         // Check if the low (peak) is a valid peak
         int peak = low;
-        if (peak == 0 || peak == length - 1 || arr[peak] <= arr[peak - 1] || arr[peak] <= arr[peak + 1] || arr[peak] == arr[peak - 1] || arr[peak] == arr[peak + 1])
+        if (peak == 0 || peak == length - 1 || arr[peak] <= arr[peak - 1] || arr[peak] <= arr[peak + 1])
         {
             return make_pair(false, -1); // invalid if peak is at the boundary or not strictly greater
         }

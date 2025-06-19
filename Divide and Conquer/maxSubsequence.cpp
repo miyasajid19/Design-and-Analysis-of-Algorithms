@@ -53,7 +53,7 @@ public:
 };
 int main()
 {
-    vector<int> array = {2, -6, -1, 3, -1, 2, -2};
+    vector<int> array = {-2,-3,4,-1,-2,1,5,-3};
     Solution s;
     cout << "Brute force ::" << s.bruteforce(array) << endl;
     cout << "Divide and Conquer ::" << s.divideAndConquer(array, 0, array.size() - 1);

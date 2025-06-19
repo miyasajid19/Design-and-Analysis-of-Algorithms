@@ -134,8 +134,9 @@ int main()
         {"D", {{"E", 2}, {"F", 6}}},
         {"E", {{"B", 1}, {"Sink", 1}}},
         {"F", {{"Sink", 9}}}};
-
+    
     EdmondsKarp<string> ek(adj_list, "Source", "Sink");
+    // ek.addEdge("B", "Sink", 1);
     cout << "Maximum Flow: " << ek.MaxFlow() << endl;
 
     return 0;

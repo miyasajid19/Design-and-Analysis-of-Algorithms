@@ -10,7 +10,6 @@ public:
     int id;       // Job ID
     int deadline; // Job deadline
     int profit;   // Job profit
-
     Job(int id, int deadline, int profit) : id(id), deadline(deadline), profit(profit) {}
 };
 
@@ -68,8 +67,8 @@ void jobSequencing(vector<Job> &jobs, int n)
 int main()
 {
     // Example input: 5 jobs
-    vector<Job> jobs = {Job(1, 2, 20), Job(2, 2, 15), Job(3, 1, 10),
-                        Job(4, 3, 5), Job(5, 1, 3)};
+    vector<Job> jobs = {Job(3, 2, 50), Job(1, 2, 30), Job(5, 1, 25),
+                        Job(2, 1, 20), Job(6, 3, 15), Job(4, 3, 10)};
     int n = jobs.size();
 
     // Perform job sequencing
